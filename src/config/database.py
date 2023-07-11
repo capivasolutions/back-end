@@ -1,32 +1,28 @@
 import psycopg2
 from src.config.logger import Logger
+from src.config.environment import Environment
 
 
 class Database:
-    connection = None
-
+    """
+        Database handles connections with the PostgreSQL Database.
+    """
     @classmethod
     def get_instance(cls):
-        if cls.connection is None:
-            cls.__create_instance(cls)
-        return cls.connection
-
-    def __create_instance(self):
+        logger = Logger.get_instance()
         try:
-            logger = Logger.get_instance()
-
-            # TODO: get credentials from .env
-            port = 5432
-            database = 'postgres'
-            username = 'postgres'
-            password = 'postgres'
-
-            conn = 'port={} dbname={} user={} password={}'.format(
-                port, database, username, password)
+            conn = 'host={} port={} dbname={} user={} password={}'.format(
+                Environment.DATABASE_HOST,
+                Environment.DATABASE_PORT,
+                Environment.DATABASE_NAME,
+                Environment.DATABASE_USER,
+                Environment.DATABASE_PASSWORD
+            )
 
             logger.debug('Connecting to PostgreSQL Database')
-            self.connection = psycopg2.connect(conn)
+            connection = psycopg2.connect(conn)
             logger.debug('Connected to PostgreSQL Database successfully')
+            return connection
         except Exception as error:
             logger.error('Could not connect to PostgreSQL Database', error)
             raise error

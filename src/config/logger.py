@@ -2,6 +2,10 @@ import logging
 
 
 class Logger:
+    """
+        Logger is a helper package to handle debug logs.
+    """
+
     logger = None
 
     @classmethod

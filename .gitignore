@@ -26,3 +26,6 @@ archive.zip
 *~
 .*.sw?
 .cache
+
+# dev database files
+/data/postgres

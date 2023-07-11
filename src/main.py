@@ -1,5 +1,7 @@
 from fastapi import FastAPI
-from src.routers import transactions
+from src.modules.transactions import transactions_router
+from src.config import Database
 
 app = FastAPI()
-app.include_router(transactions.router)
+app.include_router(transactions_router)
+Database.get_instance()
