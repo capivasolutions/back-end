@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class Classification(str, Enum):
+class TransactionClassification(str, Enum):
     FRAUDULENT = 'FRAUDULENT'
     GENUINE = 'GENUINE'
 
@@ -44,7 +44,7 @@ class Transaction(BaseModel):
     amount: float
     created_at: Union[datetime, None] = None
     updated_at: Union[datetime, None] = None
-    classification: Union[Classification, None] = None
+    classification: Union[TransactionClassification, None] = None
 
     def __str__(self):
         return 'Transaction [ id: {}, amount: {}, classification: {}, created_at: {} ]'.format(str(self.id), self.amount, self.classification, self.created_at)

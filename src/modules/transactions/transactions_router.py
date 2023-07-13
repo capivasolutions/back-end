@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from datetime import datetime
 from src.modules.transactions.transactions_service import TransactionsService
 from src.modules.transactions.transactions import Transaction
 
@@ -14,3 +15,9 @@ transactions_router = APIRouter(
 async def create_transaction(transaction: Transaction):
     transactions_service.create_transaction(transaction)
     return transaction
+
+
+@transactions_router.get("/")
+async def get_transactions(start_date: datetime = datetime.now()):
+    transactions = transactions_service.get_transactions(start_date)
+    return transactions

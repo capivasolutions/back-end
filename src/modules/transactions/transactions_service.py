@@ -1,15 +1,30 @@
+from datetime import datetime
+from typing import List
 from src.config import Logger
 from src.modules.transactions.transactions import Transaction
 from src.modules.transactions.transactions_repository import TransactionsRepository
+from src.modules.classifications import TransactionsClassifierService
 
 
 class TransactionsService:
     def __init__(self) -> None:
         self.logger = Logger.get_instance()
-        self.transaction_repository = TransactionsRepository()
+        self.transactions_repository = TransactionsRepository()
+        self.transactions_classifier = TransactionsClassifierService()
 
     def create_transaction(self, transaction: Transaction) -> Transaction:
-        self.logger.debug('Creating transaction {}'.format(transaction))
-        self.transaction_repository.create_one(transaction)
-        self.logger.debug('Transaction created {}'.format(transaction))
+        classification = self.transactions_classifier.classify(transaction)
+        transaction.classification = classification
+
+        self.logger.debug(f'Creating transaction {transaction}')
+        self.transactions_repository.create_one(transaction)
+        self.logger.debug(f'Transaction created {transaction}')
+
         return transaction
+
+    def get_transactions(self, start_date: datetime) -> List[Transaction]:
+        self.logger.debug(f'Getting all transactions from {start_date}')
+        transactions = self.transactions_repository.get_many(start_date)
+        self.logger.debug(
+            f'Found {len(transactions)} transactions from {start_date}')
+        return transactions
