@@ -1,6 +1,6 @@
 import uuid
 from typing import List
-from datetime import datetime
+from datetime import datetime, timezone
 
 from config import Logger, Database
 from .transactions import Transaction
@@ -17,8 +17,10 @@ class TransactionsRepository:
         try:
             id = str(transaction.id) if transaction.id is not None else str(
                 uuid.uuid4())
-            created_at = transaction.created_at if transaction.created_at is not None else datetime.now()
-            updated_at = transaction.updated_at if transaction.updated_at is not None else datetime.now()
+            created_at = transaction.created_at if transaction.created_at is not None else datetime.now(
+                timezone.utc)
+            updated_at = transaction.updated_at if transaction.updated_at is not None else datetime.now(
+                timezone.utc)
             cursor.execute(CREATE_ONE_TRANSACTION, (
                 id, transaction.time, transaction.v1, transaction.v2, transaction.v3, transaction.v4, transaction.v5,
                 transaction.v6, transaction.v7, transaction.v8, transaction.v9, transaction.v10, transaction.v11,
