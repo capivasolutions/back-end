@@ -1,2 +1,2 @@
-from src.modules.transactions.transactions_router import transactions_router
-from src.modules.transactions.transactions import Transaction, TransactionClassification
+from .transactions_router import transactions_router
+from .transactions import Transaction, TransactionClassification

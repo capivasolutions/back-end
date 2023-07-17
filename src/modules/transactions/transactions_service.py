@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import List
-from src.config import Logger
-from src.modules.transactions.transactions import Transaction
-from src.modules.transactions.transactions_repository import TransactionsRepository
-from src.modules.classifications import ClassifierService
+
+from modules.classifications.classifier_service import ClassifierService
+from config import Logger
+from .transactions import Transaction
+from .transactions_repository import TransactionsRepository
 
 
 class TransactionsService:

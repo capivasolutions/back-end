@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from datetime import datetime
-from src.modules.transactions.transactions_service import TransactionsService
-from src.modules.transactions.transactions import Transaction
+
+from .transactions_service import TransactionsService
+from .transactions import Transaction
 
 transactions_service = TransactionsService()
 transactions_router = APIRouter(

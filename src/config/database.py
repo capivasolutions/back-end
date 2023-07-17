@@ -1,6 +1,7 @@
 import psycopg2
-from src.config.logger import Logger
-from src.config.environment import Environment
+
+from .logger import Logger
+from .environment import Environment
 
 
 class Database:

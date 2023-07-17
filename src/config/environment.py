@@ -14,4 +14,7 @@ class Environment:
     DATABASE_USER = os.getenv('DATABASE_USER')
     DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 
+    BACKEND_HOST = os.getenv('BACKEND_HOST')
+    BACKEND_PORT = int(os.getenv('BACKEND_PORT'))
+
     CLASSIFIER_URL = os.getenv('CLASSIFIER_URL')

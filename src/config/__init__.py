@@ -1,3 +1,3 @@
-from src.config.database import Database
-from src.config.environment import Environment
-from src.config.logger import Logger
+from .database import Database
+from .environment import Environment
+from .logger import Logger

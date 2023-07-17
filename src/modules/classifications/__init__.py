@@ -1,1 +1,1 @@
-from src.modules.classifications.classifier_service import ClassifierService
+from .classifier_service import ClassifierService

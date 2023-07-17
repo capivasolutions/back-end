@@ -1,7 +1,7 @@
-
 import requests
-from src.config import Logger, Environment
-from src.modules.transactions.transactions import Transaction, TransactionClassification
+
+from config import Logger, Environment
+from modules.transactions.transactions import Transaction, TransactionClassification
 
 
 class ClassifierService:
