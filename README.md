@@ -27,7 +27,7 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 
 # Execute o back-end em ambiente de desenvolvimento
-uvicorn src.main:app --reload
+python3 src/main.py
 
 # O back-end estará disponível em http://127.0.0.1:8000/docs
 ```
