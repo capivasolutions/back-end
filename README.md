@@ -21,7 +21,7 @@ cp .env.example .env
 
 # Crie um ambiente virtual com virtualenv
 python3 -m venv venv
-source venv/bin/Activate
+source venv/bin/activate
 
 # Instale as dependências necessárias
 pip3 install -r requirements.txt

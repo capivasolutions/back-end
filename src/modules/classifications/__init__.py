@@ -1,1 +1,1 @@
-from src.modules.classifications.transactions_classifier_service import TransactionsClassifierService
+from src.modules.classifications.classifier_service import ClassifierService
