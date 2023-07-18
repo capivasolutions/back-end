@@ -82,3 +82,11 @@ class Transaction(BaseModel):
 
     def __str__(self):
         return 'Transaction [ id: {}, amount: {}, classification: {}, created_at: {} ]'.format(str(self.id), self.amount, self.classification, self.created_at)
+
+
+class TransactionsMapper:
+    @staticmethod
+    def to_model(t):
+        (id, time, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19,
+         v20, v21, v22, v23, v24, v25, v26, v27, v28, amount, classification, created_at, updated_at) = t
+        return Transaction(id=id, time=time, v1=v1, v2=v2, v3=v3, v4=v4, v5=v5, v6=v6, v7=v7, v8=v8, v9=v9, v10=v10, v11=v11, v12=v12, v13=v13, v14=v14, v15=v15, v16=v16, v17=v17, v18=v18, v19=v19, v20=v20, v21=v21, v22=v22, v23=v23, v24=v24, v25=v25, v26=v26, v27=v27, v28=v28, amount=amount, classification=classification, created_at=created_at, updated_at=updated_at)

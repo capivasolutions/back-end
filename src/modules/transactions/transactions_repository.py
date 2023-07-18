@@ -3,7 +3,7 @@ from typing import List
 from datetime import datetime, timezone
 
 from config import Logger, Database
-from .transactions import Transaction
+from .transactions import Transaction, TransactionsMapper
 from .transactions_queries import CREATE_ONE_TRANSACTION, GET_TRANSACTIONS_FROM_DATE
 
 
@@ -45,7 +45,7 @@ class TransactionsRepository:
             print(start_date)
             cursor.execute(GET_TRANSACTIONS_FROM_DATE, (start_date,))
             transactions = cursor.fetchall()
-            return transactions
+            return list(map(lambda t: TransactionsMapper.to_model(t), transactions))
         except Exception as error:
             self.logger.error(error, 'Error while trying get transactions')
             raise error
