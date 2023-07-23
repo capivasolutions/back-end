@@ -8,8 +8,16 @@ class Database:
     """
         Database handles connections with the PostgreSQL Database.
     """
+
+    instance = None
+
     @classmethod
     def get_instance(cls):
+        if Database.instance is None:
+            cls.instance = cls.__create_instance(cls)
+        return cls.instance
+
+    def __create_instance(cls):
         logger = Logger.get_instance()
         try:
             conn = 'host={} port={} dbname={} user={} password={}'.format(

@@ -34,9 +34,6 @@ class TransactionsRepository:
         except Exception as error:
             self.logger.error(error, 'Error while trying create transaction')
             raise error
-        finally:
-            cursor.close()
-            connection.close()
 
     def get_many(self, start_date: datetime) -> List[Transaction]:
         connection = Database.get_instance()
@@ -49,6 +46,3 @@ class TransactionsRepository:
         except Exception as error:
             self.logger.error(error, 'Error while trying get transactions')
             raise error
-        finally:
-            cursor.close()
-            connection.close()
