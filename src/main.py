@@ -1,4 +1,4 @@
-from config import Environment
+from config import Environment, Database
 from modules.transactions import transactions_router
 
 import uvicorn
@@ -16,5 +16,8 @@ app = FastAPI(
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 app.include_router(transactions_router)
 
+
 if __name__ == '__main__':
-    uvicorn.run("main:app", host=Environment.BACKEND_HOST, port=Environment.BACKEND_PORT, reload=True)
+    Database.get_instance()
+    uvicorn.run("main:app", host=Environment.BACKEND_HOST,
+                port=Environment.BACKEND_PORT, reload=True)
