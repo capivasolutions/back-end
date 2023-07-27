@@ -1,10 +1,11 @@
 import uuid
-from typing import List
+from uuid import UUID
+from typing import List, Union
 from datetime import datetime, timezone
 
 from config import Logger, Database
 from .transactions import Transaction, TransactionsMapper
-from .transactions_queries import CREATE_ONE_TRANSACTION, GET_TRANSACTIONS_FROM_DATE
+from .transactions_queries import CREATE_ONE_TRANSACTION, GET_TRANSACTIONS_FROM_DATE, GET_TRANSACTION_BY_ID
 
 
 class TransactionsRepository:
@@ -39,10 +40,22 @@ class TransactionsRepository:
         connection = Database.get_instance()
         cursor = connection.cursor()
         try:
-            print(start_date)
             cursor.execute(GET_TRANSACTIONS_FROM_DATE, (start_date,))
             transactions = cursor.fetchall()
             return list(map(lambda t: TransactionsMapper.to_model(t), transactions))
+        except Exception as error:
+            self.logger.error(error, 'Error while trying get transactions')
+            raise error
+
+    def get_one(self, id: UUID) -> Union[Transaction, None]:
+        connection = Database.get_instance()
+        cursor = connection.cursor()
+        try:
+            cursor.execute(GET_TRANSACTION_BY_ID, (str(id),))
+            transaction = cursor.fetchone()
+            if transaction is None:
+                return None
+            return TransactionsMapper.to_model(transaction)
         except Exception as error:
             self.logger.error(error, 'Error while trying get transactions')
             raise error

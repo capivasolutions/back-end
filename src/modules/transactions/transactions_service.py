@@ -1,5 +1,7 @@
 from datetime import datetime
 from typing import List
+from uuid import UUID
+from fastapi.exceptions import HTTPException
 
 from modules.classifications.classifier_service import ClassifierService
 from config import Logger
@@ -29,3 +31,11 @@ class TransactionsService:
         self.logger.debug(
             f'Found {len(transactions)} transactions from {start_date}')
         return transactions
+
+    def get_transaction(self, id: UUID) -> Transaction:
+        self.logger.debug(f'Getting transactions by id {id}')
+        transaction = self.repository.get_one(id)
+        if transaction is None:
+            self.logger.debug(f'Transaction {id} does not exist')
+            raise HTTPException(404, f'Transaction {id} does not exist')
+        return transaction
