@@ -4,8 +4,8 @@ from typing import List, Union
 from datetime import datetime, timezone
 
 from config import Logger, Database
-from .transactions import Transaction, TransactionsMapper
-from .transactions_queries import CREATE_ONE_TRANSACTION, GET_TRANSACTIONS_FROM_DATE, GET_TRANSACTION_BY_ID
+from .transactions import Transaction, TransactionClassification, TransactionsMapper
+from .transactions_queries import CREATE_ONE_TRANSACTION, GET_TRANSACTIONS_FROM_DATE, GET_TRANSACTION_BY_ID, GET_RECENT_TRANSACTIONS_BY_CLASS
 
 
 class TransactionsRepository:
@@ -58,4 +58,17 @@ class TransactionsRepository:
             return TransactionsMapper.to_model(transaction)
         except Exception as error:
             self.logger.error(error, 'Error while trying get transactions')
+            raise error
+
+    def get_many_by_class(self, classification: TransactionClassification, limit: int) -> List[Transaction]:
+        connection = Database.get_instance()
+        cursor = connection.cursor()
+        try:
+            cursor.execute(GET_RECENT_TRANSACTIONS_BY_CLASS,
+                           (classification, limit))
+            transactions = cursor.fetchall()
+            return list(map(lambda t: TransactionsMapper.to_model(t), transactions))
+        except Exception as error:
+            self.logger.error(
+                error, f'Error while trying get transactions by class {classification}')
             raise error

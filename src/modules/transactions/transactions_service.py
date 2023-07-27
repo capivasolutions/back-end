@@ -5,7 +5,7 @@ from fastapi.exceptions import HTTPException
 
 from modules.classifications.classifier_service import ClassifierService
 from config import Logger
-from .transactions import Transaction
+from .transactions import Transaction, TransactionClassification
 from .transactions_repository import TransactionsRepository
 
 
@@ -32,10 +32,24 @@ class TransactionsService:
             f'Found {len(transactions)} transactions from {start_date}')
         return transactions
 
-    def get_transaction(self, id: UUID) -> Transaction:
-        self.logger.debug(f'Getting transactions by id {id}')
+    def get_transaction(self, id: UUID, limit: int) -> (Transaction, List[Transaction]):
+        self.logger.debug(f'Getting transaction by id {id}')
         transaction = self.repository.get_one(id)
+
         if transaction is None:
             self.logger.debug(f'Transaction {id} does not exist')
             raise HTTPException(404, f'Transaction {id} does not exist')
-        return transaction
+
+        transactions_to_compare = []
+        if transaction.classification == TransactionClassification.FRAUDULENT:
+            self.logger.debug(f'Getting genuine transactions to compare')
+            fraudulent_transactions = self.repository.get_many_by_class(
+                TransactionClassification.GENUINE, limit)
+            transactions_to_compare.extend(fraudulent_transactions)
+        else:
+            self.logger.debug(f'Getting fraudulent transactions to compare')
+            genuine_transactions = self.repository.get_many_by_class(
+                TransactionClassification.FRAUDULENT, limit)
+            transactions_to_compare.extend(genuine_transactions)
+
+        return transaction, transactions_to_compare

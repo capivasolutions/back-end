@@ -26,6 +26,7 @@ async def get_transactions(start_date: datetime = datetime.now()):
 
 
 @transactions_router.get("/{id}")
-async def get_transaction(id: UUID):
-    transaction = transactions_service.get_transaction(id)
-    return transaction
+async def get_transaction(id: UUID, limit: int = 100):
+    transaction, transactions_to_compare = transactions_service.get_transaction(
+        id, limit)
+    return {"transaction": transaction, "comparable": transactions_to_compare}
